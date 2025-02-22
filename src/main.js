@@ -1,5 +1,6 @@
 import "./notes-list.js";
 import "./notes-item.js";
+import "./notes-form.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const notesData = [
