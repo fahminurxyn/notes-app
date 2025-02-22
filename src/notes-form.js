@@ -13,12 +13,20 @@ class NoteForm extends HTMLElement {
 
   submitHandler(event) {
     event.preventDefault();
-    const title = this.shadowRoot.querySelector("#title").value;
-    const body = this.shadowRoot.querySelector("#body").value;
+    const title = this.shadowRoot.querySelector("#title");
+    const body = this.shadowRoot.querySelector("#body");
+    const errorMessage = this.shadowRoot.querySelector("#error-message");
+
+    if (title.value.trim() === "" || body.value.trim() === "") {
+      errorMessage.textContent = "Judul dan isi catatan tidak boleh kosong!";
+      return;
+    }
+
+    errorMessage.textContent = "";
     const newNote = {
       id: Date.now().toString(),
-      title,
-      body,
+      title: title.value,
+      body: body.value,
       createdAt: new Date().toISOString(),
       archived: false,
     };
@@ -34,13 +42,36 @@ class NoteForm extends HTMLElement {
           gap: 8px;
           padding: 16px;
         }
+        input, textarea {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 1em;
+        }
+        .error-message {
+          color: red;
+          font-size: 0.9em;
+          margin-top: 5px;
+        }
+        button {
+          background-color: #4caf50;
+          color: white;
+          padding: 10px;
+          border: none;
+          cursor: pointer;
+        }
+        
+        button:hover {
+          background-color: #45a049;
+        }
       </style>
-      <form>
-        <input type="text" id="title" placeholder="Judul Catatan" required />
-        <textarea id="body" placeholder="Isi Catatan" required></textarea>
+      <form novalidate>
+        <input type="text" id="title" placeholder="Judul Catatan" />
+        <textarea id="body" placeholder="Isi Catatan"></textarea>
+        <span id="error-message" class="error-message"></span>
         <button type="submit">Tambah Catatan</button>
       </form>
     `;
   }
 }
-customElements.define("note-form", NoteForm);
+customElements.define("notes-form", NoteForm);

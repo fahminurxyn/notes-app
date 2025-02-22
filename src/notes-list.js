@@ -31,7 +31,7 @@ class NotesList extends HTMLElement {
     this.appendChild(this._style);
 
     this._notes.forEach((note) => {
-      const noteItem = document.createElement("note-item");
+      const noteItem = document.createElement("notes-item");
       noteItem.setNote(note);
       this.appendChild(noteItem);
     });
