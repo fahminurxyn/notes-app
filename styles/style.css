@@ -14,14 +14,3 @@ header {
   padding: 15px 15px;
 }
 
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
