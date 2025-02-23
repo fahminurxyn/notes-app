@@ -1,3 +1,4 @@
+const colors = ["#afc9f2", "#E2E41E", "#c396ef", "#ffffff"];
 class NoteForm extends HTMLElement {
   constructor() {
     super();
@@ -29,6 +30,7 @@ class NoteForm extends HTMLElement {
       body: body.value,
       createdAt: new Date().toISOString(),
       archived: false,
+      color: colors[Math.floor(Math.random() * colors.length)],
     };
     document.dispatchEvent(new CustomEvent("note-added", { detail: newNote }));
   }
@@ -40,13 +42,23 @@ class NoteForm extends HTMLElement {
           display: flex;
           flex-direction: column;
           gap: 8px;
-          padding: 16px;
+          padding: 12px 35px;
+        }
+        h1 {
+          text-align: left;
+          padding-left: 35px
+        }
+        label {
+          font-size: 18px;
+          font-weight: 500;
         }
         input, textarea {
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
+          padding: 20px;
+          border: none;
+          border-radius: 20px;
           font-size: 1em;
+          background-color: #323433;
+          color: white;
         }
         .error-message {
           color: red;
@@ -54,20 +66,26 @@ class NoteForm extends HTMLElement {
           margin-top: 5px;
         }
         button {
-          background-color: #4caf50;
+          background-color: #b1a5e9;
           color: white;
-          padding: 10px;
+          padding: 20px;
+          border-radius: 20px;
           border: none;
           cursor: pointer;
+          font-size: 20px;
+          font-weight: 700;
         }
         
         button:hover {
-          background-color: #45a049;
+          background-color:rgb(129, 120, 169);
         }
       </style>
+      <h1>Create Your Notes... </h1>
       <form novalidate>
-        <input type="text" id="title" placeholder="Judul Catatan" />
-        <textarea id="body" placeholder="Isi Catatan"></textarea>
+        <label for="title">Notes Title</label>
+        <input type="text" id="title" placeholder="Create Your Title for Notes..." />
+        <label for="title">Notes Description</label>
+        <textarea id="body" placeholder="Fill Your Description for your Notes..."></textarea>
         <span id="error-message" class="error-message"></span>
         <button type="submit">Tambah Catatan</button>
       </form>

@@ -16,11 +16,21 @@ class NotesList extends HTMLElement {
 
   updateStyle() {
     this._style.textContent = `
-        notes-list {
+        :host {
+          display: block;
+        }
+
+        h1 {
+          margin-bottom: 20px;
+          color: #f4f4f4;
+          padding: 12px 35px;
+        }
+
+        .notes-container {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
           gap: 1rem;
-          padding: 16px;
+          padding: 12px 35px;
         }
       `;
   }
@@ -30,11 +40,21 @@ class NotesList extends HTMLElement {
     this.innerHTML = "";
     this.appendChild(this._style);
 
+    const title = document.createElement("h1");
+    title.textContent = "Your Notes";
+    this.appendChild(title);
+
+    const notesContainer = document.createElement("div");
+    notesContainer.classList.add("notes-container");
+
     this._notes.forEach((note) => {
       const noteItem = document.createElement("notes-item");
       noteItem.setNote(note);
-      this.appendChild(noteItem);
+      notesContainer.appendChild(noteItem);
     });
+
+    this.appendChild(notesContainer);
   }
 }
+
 customElements.define("notes-list", NotesList);

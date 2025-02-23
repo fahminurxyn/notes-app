@@ -10,9 +10,11 @@ class NoteItem extends HTMLElement {
         :host {
           display: block;
           padding: 1rem;
-          border-radius: 4px;
-          box-shadow: 0 0 2px 2px #33333377;
-          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          background:  ${value.color};
+          color: #111111;
+          text-align: left;
         }
         .note__title {
           font-size: 1.3em;
