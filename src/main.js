@@ -1,3 +1,4 @@
+import "./notes-header.js";
 import "./notes-list.js";
 import "./notes-item.js";
 import "./notes-form.js";

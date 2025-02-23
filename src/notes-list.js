@@ -49,7 +49,7 @@ class NotesList extends HTMLElement {
 
     this._notes.forEach((note) => {
       const noteItem = document.createElement("notes-item");
-      noteItem.setNote(note);
+      noteItem.setAttribute("note-data", JSON.stringify(note)); // Gunakan custom attribute
       notesContainer.appendChild(noteItem);
     });
 
