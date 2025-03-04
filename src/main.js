@@ -2,6 +2,7 @@ import "./components/notes-header.js";
 import "./components/notes-list.js";
 import "./components/notes-item.js";
 import "./components/notes-form.js";
+import './styles/style.css';
 import { getNotes, addNote, deleteNote } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
