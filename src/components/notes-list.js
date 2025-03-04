@@ -10,6 +10,22 @@ class NotesList extends HTMLElement {
     this.render();
   }
 
+  getRandomColor() {
+    const colors = ["#afc9f2", "#E2E41E", "#c396ef", "#ffffff"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  addNote(note) {
+    note.color = this.getRandomColor();
+    this._notes.push(note);
+    this.render();
+  }
+
+  removeNote(noteId) {
+    this._notes = this._notes.filter(note => note.id !== noteId);
+    this.render();
+  }
+
   connectedCallback() {
     this.render();
   }
@@ -49,7 +65,7 @@ class NotesList extends HTMLElement {
 
     this._notes.forEach((note) => {
       const noteItem = document.createElement("notes-item");
-      noteItem.setAttribute("note-data", JSON.stringify(note)); // Gunakan custom attribute
+      noteItem.setAttribute("note-data", JSON.stringify(note));
       notesContainer.appendChild(noteItem);
     });
 

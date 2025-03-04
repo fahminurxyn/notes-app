@@ -28,6 +28,8 @@ class NoteItem extends HTMLElement {
           background: ${noteData.color};
           color: #111111;
           text-align: left;
+          position: relative;
+          overflow: hidden;
         }
         .note__title {
           font-size: 1.3em;
@@ -37,11 +39,44 @@ class NoteItem extends HTMLElement {
         .note__body {
           margin-bottom: 0.5rem;
         }
+        small {
+          font-size: 0.8em;
+          color: #555;
+        }
+        .delete-btn {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background-color: #ff4d4f;
+          color: white;
+          border: none;
+          padding: 6px 10px;
+          font-size: 0.8em;
+          cursor: pointer;
+          border-radius: 5px;
+          transition: background-color 0.2s ease;
+        }
+        .delete-btn:hover {
+          background-color: #ff7875;
+        }
       </style>
       <h5 class="note__title">${noteData.title}</h5>
       <p class="note__body">${noteData.body}</p>
       <small>${new Date(noteData.createdAt).toLocaleString()}</small>
+      <button class="delete-btn">Delete</button>
     `;
+
+    this.shadowRoot
+      .querySelector(".delete-btn")
+      .addEventListener("click", () => {
+        this.dispatchEvent(
+          new CustomEvent("note-deleted", {
+            bubbles: true,
+            composed: true,
+            detail: { id: noteData.id },
+          })
+        );
+      });
   }
 }
 
