@@ -40,45 +40,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadingIndicator.remove();
   }
 
-  document
-    .querySelector("notes-header")
-    .addEventListener("filter-changed", async (event) => {
-      const filter = event.detail.filter;
-
-      const loadingIndicator = document.createElement("notes-loading");
-      document.body.appendChild(loadingIndicator);
-
-      try {
-        let notes = [];
-        if (filter === "archived") {
-          notes = await getArchivedNotes();
-        } else {
-          notes = await getNotes();
-        }
-
-        const notesWithColors = notes.map((note) => ({
+  document.querySelector("notes-list").addEventListener("toggle-view", async () => {
+    const notesList = document.querySelector("notes-list");
+  
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+  
+    try {
+      if (notesList._isArchivedView) {
+        const unarchivedNotes = await getNotes();
+        const notesWithColors = unarchivedNotes.map((note) => ({
           ...note,
           color: colors[Math.floor(Math.random() * colors.length)],
         }));
-
-        notesList.setNotes(notesWithColors);
-
-        const buttons = document
-          .querySelector("notes-header")
-          .shadowRoot.querySelectorAll("button");
-        buttons.forEach((button) => {
-          button.classList.toggle("active", button.dataset.filter === filter);
-        });
-      } catch (error) {
-        alert(`Gagal memuat catatan: ${error.message}`);
-      } finally {
-        loadingIndicator.remove();
+        notesList.setNotes(notesWithColors, false);
+      } else {
+        const archivedNotes = await getArchivedNotes();
+        const notesWithColors = archivedNotes.map((note) => ({
+          ...note,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        }));
+        notesList.setNotes(notesWithColors, true);
       }
-    });
+    } catch (error) {
+      alert(`Gagal memuat catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
+    }
+  });
+  
+  
 
   document.addEventListener("note-added", async (event) => {
     const loadingIndicator = document.createElement("notes-loading");
     document.body.appendChild(loadingIndicator);
+    
     try {
       const newNote = await addNote(event.detail);
       notesList.addNote(newNote);

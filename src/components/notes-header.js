@@ -60,10 +60,6 @@ class NotesHeader extends HTMLElement {
       </style>
       <header>
         <h1>Your Notes</h1>
-        <div class="filter-buttons">
-          <button data-filter="active" class="active">Catatan Aktif</button>
-          <button data-filter="archived">Catatan Arsip</button>
-        </div>
       </header>
     `;
   }

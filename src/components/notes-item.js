@@ -45,38 +45,53 @@ class NoteItem extends HTMLElement {
           font-size: 0.8em;
           color: #555;
         }
-        .btn {
+        .icon-btn {
           position: absolute;
           top: 8px;
-          padding: 6px 10px;
-          font-size: 0.8em;
           cursor: pointer;
-          border-radius: 5px;
-          transition: background-color 0.2s ease;
+          background: none;
           border: none;
+          padding: 6px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+        }
+        .icon-btn svg {
+          width: 20px;
+          height: 20px;
+          stroke: #ffffff;
         }
         .delete-btn {
           right: 8px;
           background-color: #ff4d4f;
-          color: white;
         }
         .archive-btn {
-          right: 70px;
+          right: 48px;
           background-color: #4caf50;
-          color: white;
         }
         .unarchive-btn {
-          right: 70px;
+          right: 48px;
           background-color: #ffc107;
-          color: white;
         }
       </style>
       <h5 class="note__title">${noteData.title}</h5>
       <p class="note__body">${noteData.body}</p>
       <small>${new Date(noteData.createdAt).toLocaleString()}</small>
-      <button class="btn delete-btn">Delete</button>
-      <button class="btn ${isArchived ? "unarchive-btn" : "archive-btn"}">
-        ${isArchived ? "Unarchive" : "Archive"}
+
+      <button class="icon-btn delete-btn" title="Delete Note">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m1 0v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6h12Zm-5 4v6m-3-6v6m6-6v6"/></svg>
+      </button>
+
+      <button class="icon-btn ${isArchived ? "unarchive-btn" : "archive-btn"}" title="${isArchived ? "Unarchive" : "Archive"} Note">
+        ${
+          isArchived
+            ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 8v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-3.6-3.6a2 2 0 0 0-1.4-.6H9a2 2 0 0 0-1.4.6L4 8m5 4h6m-3-3v6"/></svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 8v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-3.6-3.6a2 2 0 0 0-1.4-.6H9a2 2 0 0 0-1.4.6L4 8m4 4h8"/></svg>`
+        }
       </button>
     `;
 
