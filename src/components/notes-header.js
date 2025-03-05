@@ -10,15 +10,17 @@ class NotesHeader extends HTMLElement {
   }
 
   attachEventListeners() {
-    const buttons = this.shadowRoot.querySelectorAll('button');
-    buttons.forEach(button => {
-      button.addEventListener('click', (event) => {
+    const buttons = this.shadowRoot.querySelectorAll("button");
+    buttons.forEach((button) => {
+      button.addEventListener("click", (event) => {
         const filter = event.target.dataset.filter;
-        this.dispatchEvent(new CustomEvent('filter-changed', {
-          bubbles: true,
-          composed: true,
-          detail: { filter }
-        }));
+        this.dispatchEvent(
+          new CustomEvent("filter-changed", {
+            bubbles: true,
+            composed: true,
+            detail: { filter },
+          })
+        );
       });
     });
   }

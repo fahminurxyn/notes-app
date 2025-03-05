@@ -80,17 +80,20 @@ class NoteItem extends HTMLElement {
       </button>
     `;
 
-    this.shadowRoot.querySelector(".delete-btn").addEventListener("click", () => {
-      this.dispatchEvent(
-        new CustomEvent("note-deleted", {
-          bubbles: true,
-          composed: true,
-          detail: { id: noteData.id },
-        })
-      );
-    });
+    this.shadowRoot
+      .querySelector(".delete-btn")
+      .addEventListener("click", () => {
+        this.dispatchEvent(
+          new CustomEvent("note-deleted", {
+            bubbles: true,
+            composed: true,
+            detail: { id: noteData.id },
+          })
+        );
+      });
 
-    this.shadowRoot.querySelector(isArchived ? ".unarchive-btn" : ".archive-btn")
+    this.shadowRoot
+      .querySelector(isArchived ? ".unarchive-btn" : ".archive-btn")
       .addEventListener("click", () => {
         this.dispatchEvent(
           new CustomEvent(isArchived ? "note-unarchived" : "note-archived", {

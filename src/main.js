@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("note-added", async (event) => {
     const loadingIndicator = document.createElement("notes-loading");
     document.body.appendChild(loadingIndicator);
-
     try {
       const newNote = await addNote(event.detail);
       notesList.addNote(newNote);

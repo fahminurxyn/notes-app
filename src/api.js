@@ -32,7 +32,6 @@ const getArchivedNotes = async () => {
   }
 };
 
-
 const addNote = async ({ title, body }) => {
   try {
     const response = await fetch(`${baseUrl}/notes`, {
@@ -107,4 +106,11 @@ const unarchiveNote = async (id) => {
   }
 };
 
-export { getNotes, getArchivedNotes, addNote, deleteNote, archiveNote, unarchiveNote };
+export {
+  getNotes,
+  getArchivedNotes,
+  addNote,
+  deleteNote,
+  archiveNote,
+  unarchiveNote,
+};
