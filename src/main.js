@@ -85,14 +85,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       notesList.addNote(newNote);
 
       Swal.fire({
-        icon: 'success',
-        title: 'Sukses',
-        text: 'Catatan berhasil ditambahkan!',
+        icon: "success",
+        title: "Sukses",
+        text: "Catatan berhasil ditambahkan!",
       });
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `Gagal menambahkan catatan: ${error.message}`,
       });
     } finally {
@@ -109,14 +109,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       notesList.removeNote(event.detail.id);
 
       Swal.fire({
-        icon: 'success',
-        title: 'Sukses',
-        text: 'Catatan berhasil dihapus!',
+        icon: "success",
+        title: "Sukses",
+        text: "Catatan berhasil dihapus!",
       });
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `Gagal menghapus catatan: ${error.message}`,
       });
     } finally {
@@ -132,14 +132,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       await archiveNote(event.detail.id);
       notesList.removeNote(event.detail.id);
       Swal.fire({
-        icon: 'success',
-        title: 'Sukses',
-        text: 'Catatan berhasil arsipkan!',
+        icon: "success",
+        title: "Sukses",
+        text: "Catatan berhasil arsipkan!",
       });
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `Gagal mengarsipkan catatan: ${error.message}`,
       });
     } finally {
@@ -162,14 +162,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       Swal.fire({
-        icon: 'success',
-        title: 'Sukses',
-        text: 'Catatan berhasil dikembalikan!',
+        icon: "success",
+        title: "Sukses",
+        text: "Catatan berhasil dikembalikan!",
       });
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `Gagal mengembalikan catatan: ${error.message}`,
       });
     } finally {
