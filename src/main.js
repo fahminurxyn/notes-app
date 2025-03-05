@@ -2,12 +2,16 @@ import "./components/notes-header.js";
 import "./components/notes-list.js";
 import "./components/notes-item.js";
 import "./components/notes-form.js";
-import './styles/style.css';
+import "./components/notes-loading.js";
+import "./styles/style.css";
 import { getNotes, addNote, deleteNote } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const colors = ["#afc9f2", "#E2E41E", "#c396ef", "#ffffff"];
   const notesList = document.querySelector("notes-list");
+
+  const loadingIndicator = document.createElement("notes-loading");
+  document.body.appendChild(loadingIndicator);
 
   try {
     const notes = await getNotes();
@@ -20,6 +24,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     notesList.setNotes(notesWithColors);
   } catch (error) {
     alert(`Gagal memuat catatan: ${error.message}`);
+  } finally {
+    loadingIndicator.remove();
   }
 
   document.addEventListener("note-added", async (event) => {
@@ -28,6 +34,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       notesList.addNote(newNote);
     } catch (error) {
       alert(`Gagal menambahkan catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
     }
   });
 
@@ -37,6 +45,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       notesList.removeNote(event.detail.id);
     } catch (error) {
       alert(`Gagal menghapus catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
     }
   });
 });
