@@ -4,6 +4,7 @@ import "./components/notes-item.js";
 import "./components/notes-form.js";
 import "./components/notes-loading.js";
 import "./styles/style.css";
+import Swal from "sweetalert2";
 import {
   getNotes,
   getArchivedNotes,
@@ -30,43 +31,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     notesList.setNotes(notesWithColors);
   } catch (error) {
-    alert(`Gagal memuat catatan: ${error.message}`);
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: `Gagal menampilkan catatan: ${error.message}`,
+    });
   } finally {
     loadingIndicator.remove();
   }
 
-  document.querySelector("notes-header").addEventListener("filter-changed", async (event) => {
-    const filter = event.detail.filter;
-  
-    const loadingIndicator = document.createElement("notes-loading");
-    document.body.appendChild(loadingIndicator);
-  
-    try {
-      let notes = [];
-      if (filter === "archived") {
-        notes = await getArchivedNotes();
-      } else {
-        notes = await getNotes();
+  document
+    .querySelector("notes-header")
+    .addEventListener("filter-changed", async (event) => {
+      const filter = event.detail.filter;
+
+      const loadingIndicator = document.createElement("notes-loading");
+      document.body.appendChild(loadingIndicator);
+
+      try {
+        let notes = [];
+        if (filter === "archived") {
+          notes = await getArchivedNotes();
+        } else {
+          notes = await getNotes();
+        }
+
+        const notesWithColors = notes.map((note) => ({
+          ...note,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        }));
+
+        notesList.setNotes(notesWithColors);
+
+        const buttons = document
+          .querySelector("notes-header")
+          .shadowRoot.querySelectorAll("button");
+        buttons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.filter === filter);
+        });
+      } catch (error) {
+        alert(`Gagal memuat catatan: ${error.message}`);
+      } finally {
+        loadingIndicator.remove();
       }
-  
-      const notesWithColors = notes.map((note) => ({
-        ...note,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }));
-  
-      notesList.setNotes(notesWithColors);
-  
-      // Highlight tombol aktif (opsional, kalau mau dikasih class "active")
-      const buttons = document.querySelector("notes-header").shadowRoot.querySelectorAll('button');
-      buttons.forEach(button => {
-        button.classList.toggle('active', button.dataset.filter === filter);
-      });
-    } catch (error) {
-      alert(`Gagal memuat catatan: ${error.message}`);
-    } finally {
-      loadingIndicator.remove();
-    }
-  });
+    });
 
   document.addEventListener("note-added", async (event) => {
     const loadingIndicator = document.createElement("notes-loading");
@@ -75,8 +83,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const newNote = await addNote(event.detail);
       notesList.addNote(newNote);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: 'Catatan berhasil ditambahkan!',
+      });
     } catch (error) {
-      alert(`Gagal menambahkan catatan: ${error.message}`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Gagal menambahkan catatan: ${error.message}`,
+      });
     } finally {
       loadingIndicator.remove();
     }
@@ -89,8 +107,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       await deleteNote(event.detail.id);
       notesList.removeNote(event.detail.id);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: 'Catatan berhasil dihapus!',
+      });
     } catch (error) {
-      alert(`Gagal menghapus catatan: ${error.message}`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Gagal menghapus catatan: ${error.message}`,
+      });
     } finally {
       loadingIndicator.remove();
     }
@@ -99,18 +127,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("note-archived", async (event) => {
     const loadingIndicator = document.createElement("notes-loading");
     document.body.appendChild(loadingIndicator);
-  
+
     try {
       await archiveNote(event.detail.id);
       notesList.removeNote(event.detail.id);
-      alert("Catatan berhasil diarsipkan!");
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: 'Catatan berhasil arsipkan!',
+      });
     } catch (error) {
-      alert(`Gagal mengarsipkan catatan: ${error.message}`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Gagal mengarsipkan catatan: ${error.message}`,
+      });
     } finally {
       loadingIndicator.remove();
     }
   });
-  
 
   document.addEventListener("note-unarchived", async (event) => {
     const loadingIndicator = document.createElement("notes-loading");
@@ -125,8 +160,18 @@ document.addEventListener("DOMContentLoaded", async () => {
           color: colors[Math.floor(Math.random() * colors.length)],
         }))
       );
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses',
+        text: 'Catatan berhasil dikembalikan!',
+      });
     } catch (error) {
-      alert(`Gagal mengembalikan catatan: ${error.message}`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Gagal mengembalikan catatan: ${error.message}`,
+      });
     } finally {
       loadingIndicator.remove();
     }
