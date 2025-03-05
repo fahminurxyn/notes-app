@@ -4,7 +4,14 @@ import "./components/notes-item.js";
 import "./components/notes-form.js";
 import "./components/notes-loading.js";
 import "./styles/style.css";
-import { getNotes, addNote, deleteNote } from "./api.js";
+import {
+  getNotes,
+  getArchivedNotes,
+  addNote,
+  deleteNote,
+  archiveNote,
+  unarchiveNote,
+} from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const colors = ["#afc9f2", "#E2E41E", "#c396ef", "#ffffff"];
@@ -28,7 +35,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadingIndicator.remove();
   }
 
+  document.querySelector("notes-header").addEventListener("filter-changed", async (event) => {
+    const filter = event.detail.filter;
+  
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+  
+    try {
+      let notes = [];
+      if (filter === "archived") {
+        notes = await getArchivedNotes();
+      } else {
+        notes = await getNotes();
+      }
+  
+      const notesWithColors = notes.map((note) => ({
+        ...note,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      }));
+  
+      notesList.setNotes(notesWithColors);
+  
+      // Highlight tombol aktif (opsional, kalau mau dikasih class "active")
+      const buttons = document.querySelector("notes-header").shadowRoot.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+      });
+    } catch (error) {
+      alert(`Gagal memuat catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
+    }
+  });
+
   document.addEventListener("note-added", async (event) => {
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+
     try {
       const newNote = await addNote(event.detail);
       notesList.addNote(newNote);
@@ -40,11 +83,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.addEventListener("note-deleted", async (event) => {
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+
     try {
       await deleteNote(event.detail.id);
       notesList.removeNote(event.detail.id);
     } catch (error) {
       alert(`Gagal menghapus catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
+    }
+  });
+
+  document.addEventListener("note-archived", async (event) => {
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+  
+    try {
+      await archiveNote(event.detail.id);
+      notesList.removeNote(event.detail.id);
+      alert("Catatan berhasil diarsipkan!");
+    } catch (error) {
+      alert(`Gagal mengarsipkan catatan: ${error.message}`);
+    } finally {
+      loadingIndicator.remove();
+    }
+  });
+  
+
+  document.addEventListener("note-unarchived", async (event) => {
+    const loadingIndicator = document.createElement("notes-loading");
+    document.body.appendChild(loadingIndicator);
+
+    try {
+      await unarchiveNote(event.detail.id);
+      const notes = await getNotes();
+      notesList.setNotes(
+        notes.map((note) => ({
+          ...note,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        }))
+      );
+    } catch (error) {
+      alert(`Gagal mengembalikan catatan: ${error.message}`);
     } finally {
       loadingIndicator.remove();
     }

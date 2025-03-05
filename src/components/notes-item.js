@@ -18,6 +18,8 @@ class NoteItem extends HTMLElement {
     const noteData = JSON.parse(this.getAttribute("note-data"));
     if (!noteData) return;
 
+    const isArchived = noteData.archived;
+
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -43,34 +45,55 @@ class NoteItem extends HTMLElement {
           font-size: 0.8em;
           color: #555;
         }
-        .delete-btn {
+        .btn {
           position: absolute;
           top: 8px;
-          right: 8px;
-          background-color: #ff4d4f;
-          color: white;
-          border: none;
           padding: 6px 10px;
           font-size: 0.8em;
           cursor: pointer;
           border-radius: 5px;
           transition: background-color 0.2s ease;
+          border: none;
         }
-        .delete-btn:hover {
-          background-color: #ff7875;
+        .delete-btn {
+          right: 8px;
+          background-color: #ff4d4f;
+          color: white;
+        }
+        .archive-btn {
+          right: 70px;
+          background-color: #4caf50;
+          color: white;
+        }
+        .unarchive-btn {
+          right: 70px;
+          background-color: #ffc107;
+          color: white;
         }
       </style>
       <h5 class="note__title">${noteData.title}</h5>
       <p class="note__body">${noteData.body}</p>
       <small>${new Date(noteData.createdAt).toLocaleString()}</small>
-      <button class="delete-btn">Delete</button>
+      <button class="btn delete-btn">Delete</button>
+      <button class="btn ${isArchived ? "unarchive-btn" : "archive-btn"}">
+        ${isArchived ? "Unarchive" : "Archive"}
+      </button>
     `;
 
-    this.shadowRoot
-      .querySelector(".delete-btn")
+    this.shadowRoot.querySelector(".delete-btn").addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("note-deleted", {
+          bubbles: true,
+          composed: true,
+          detail: { id: noteData.id },
+        })
+      );
+    });
+
+    this.shadowRoot.querySelector(isArchived ? ".unarchive-btn" : ".archive-btn")
       .addEventListener("click", () => {
         this.dispatchEvent(
-          new CustomEvent("note-deleted", {
+          new CustomEvent(isArchived ? "note-unarchived" : "note-archived", {
             bubbles: true,
             composed: true,
             detail: { id: noteData.id },
